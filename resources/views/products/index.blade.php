@@ -16,7 +16,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Price</th>
+                    <th>Price in USD</th>
+                    <th>Price in EUR</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +26,7 @@
                     <td>{{$product->id}}</td>
                     <td>{{$product->name}}</td>
                     <td>{{$product->price}}</td>
+                    <td>{{$product->price_eur}}</td>
                 </tr>
                 @empty
                 <tr>
