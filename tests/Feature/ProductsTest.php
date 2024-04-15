@@ -47,4 +47,26 @@ class ProductsTest extends TestCase
         // Assert if the page contains 'No products found'
         $response->assertSee('No products found');
     }
+
+    public function test_paginated_products_table_doesnt_contain_11th_record()
+    {
+        // Create 11 new products using the factory
+        $products = Products::factory(11)->create();
+        
+        // Get the last product in the collection
+        $lastProduct = $products->last();
+
+        // Get the route for index
+        $response = $this->get('products/index');
+
+        // Check if the page can successfully be reached
+        $response->assertStatus(200);
+
+        /* Assert if view receives controller variable $productList
+            and if the last product in the collection is not visible on the page
+        */
+        $response->assertViewHas('productList', function ($collection) use ($lastProduct) {
+            return !$collection->contains($lastProduct);
+        });
+    }
 }

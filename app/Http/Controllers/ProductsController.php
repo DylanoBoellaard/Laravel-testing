@@ -13,13 +13,13 @@ class ProductsController extends Controller
     public function index()
     {
         // Get product details
-        $productList = Products::select('products.id', 'products.name', 'products.price')
-            ->orderBy('products.id', 'asc')
-            ->get();
+        // $productList = Products::select('products.id', 'products.name', 'products.price')
+        //     ->orderBy('products.id', 'asc')
+        //     ->get();
 
-        return view('products.index', [
-            'productList' => $productList
-        ]);
+        $productList = Products::paginate(10);
+
+        return view('products.index', compact('productList'));
     }
 
     /**
