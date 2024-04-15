@@ -15,14 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Homepage
+Route::redirect('/', 'login');
 
+// Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Profile
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -30,6 +31,8 @@ Route::middleware('auth')->group(function () {
 });
 
 // Products page
-Route::get('/products/index', [ProductsController::class, 'index'])->name('products.index');
+Route::middleware('auth')->group(function () {
+    Route::get('/products/index', [ProductsController::class, 'index'])->name('products.index');
+});
 
 require __DIR__.'/auth.php';
