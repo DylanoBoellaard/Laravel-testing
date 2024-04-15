@@ -12,19 +12,30 @@ class ProductsTest extends TestCase
 {
     use RefreshDatabase;
 
+    // Required for setUp()
+    private User $user;
+
+    // Setup global variable ($user)
+    protected function setUp(): void
+    {
+        // Required
+        parent::setUp();
+
+        // Setup and create a user
+        $this->user = $this->createUser();
+    }
+
     // Test to check if homepage contains created data
     public function test_homepage_contains_filled_table(): void
     {
-        $user = User::factory()->create();
-
         // Create a new product using the model
         $product = Products::create([
             'name' => 'Product 1',
             'price' => 5.00
         ]);
 
-        // Get the route for index acting as the newly craeted user
-        $response = $this->actingAs($user)->get('products/index');
+        // Get the route for index acting as the newly created user
+        $response = $this->actingAs($this->user)->get('products/index');
 
         // Check if the page can succesfully be reached
         $response->assertStatus(200);
@@ -41,11 +52,8 @@ class ProductsTest extends TestCase
     // Test to check if homepage contains no product data
     public function test_homepage_contains_empty_table(): void
     {
-        // Create a new user
-        $user = User::factory()->create();
-
         // Get the route for index acting as the newly created user
-        $response = $this->actingAs($user)->get('products/index');
+        $response = $this->actingAs($this->user)->get('products/index');
 
         // Check if the page can successfully be reached
         $response->assertStatus(200);
@@ -56,9 +64,6 @@ class ProductsTest extends TestCase
 
     public function test_paginated_products_table_doesnt_contain_11th_record()
     {
-        // Create a new user
-        $user = User::factory()->create();
-
         // Create 11 new products using the factory
         $products = Products::factory(11)->create();
 
@@ -66,7 +71,7 @@ class ProductsTest extends TestCase
         $lastProduct = $products->last();
 
         // Get the route for index acting as the newly created user
-        $response = $this->actingAs($user)->get('products/index');
+        $response = $this->actingAs($this->user)->get('products/index');
 
         // Check if the page can successfully be reached
         $response->assertStatus(200);
@@ -75,5 +80,11 @@ class ProductsTest extends TestCase
         $response->assertViewHas('productList', function ($collection) use ($lastProduct) {
             return !$collection->contains($lastProduct);
         });
+    }
+
+    private function createUser(): User
+    {
+        // Create a new user
+        return User::factory()->create();
     }
 }
