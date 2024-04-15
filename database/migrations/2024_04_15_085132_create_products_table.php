@@ -22,60 +22,60 @@ return new class extends Migration
         });
 
         // Insert values in table products
-        DB::table('products')->insert([
-            [
-                'name' => 'Mintnopjes',
-                'price' => 5.00
-            ],
-            [
-                'name' => 'Schoolkrijt',
-                'price' => 7.50
-            ],
-            [
-                'name' => 'Honingdrop',
-                'price' => 6.90
-            ],
-            [
-                'name' => 'Zure Beren',
-                'price' => 3.20
-            ],
-            [
-                'name' => 'Cola Flesjes',
-                'price' => 2.15
-            ],
-            [
-                'name' => 'Turtles',
-                'price' => 1.05
-            ],
-            [
-                'name' => 'Witte Muizen',
-                'price' => 4.20
-            ],
-            [
-                'name' => 'Reuze Slangen',
-                'price' => 1.35
-            ],
-            [
-                'name' => 'Zoute Rijen',
-                'price' => 2.00
-            ],
-            [
-                'name' => 'Winegums',
-                'price' => 10.50
-            ],
-            [
-                'name' => 'Drop Munten',
-                'price' => 4.75
-            ],
-            [
-                'name' => 'Kruis drop',
-                'price' => 2.95
-            ],
-            [
-                'name' => 'Zoute Ruitjes',
-                'price' => 3.50
-            ],
-        ]);
+        // DB::table('products')->insert([
+        //     [
+        //         'name' => 'Mintnopjes',
+        //         'price' => 5.00
+        //     ],
+        //     [
+        //         'name' => 'Schoolkrijt',
+        //         'price' => 7.50
+        //     ],
+        //     [
+        //         'name' => 'Honingdrop',
+        //         'price' => 6.90
+        //     ],
+        //     [
+        //         'name' => 'Zure Beren',
+        //         'price' => 3.20
+        //     ],
+        //     [
+        //         'name' => 'Cola Flesjes',
+        //         'price' => 2.15
+        //     ],
+        //     [
+        //         'name' => 'Turtles',
+        //         'price' => 1.05
+        //     ],
+        //     [
+        //         'name' => 'Witte Muizen',
+        //         'price' => 4.20
+        //     ],
+        //     [
+        //         'name' => 'Reuze Slangen',
+        //         'price' => 1.35
+        //     ],
+        //     [
+        //         'name' => 'Zoute Rijen',
+        //         'price' => 2.00
+        //     ],
+        //     [
+        //         'name' => 'Winegums',
+        //         'price' => 10.50
+        //     ],
+        //     [
+        //         'name' => 'Drop Munten',
+        //         'price' => 4.75
+        //     ],
+        //     [
+        //         'name' => 'Kruis drop',
+        //         'price' => 2.95
+        //     ],
+        //     [
+        //         'name' => 'Zoute Ruitjes',
+        //         'price' => 3.50
+        //     ],
+        // ]);
     }
 
     /**
