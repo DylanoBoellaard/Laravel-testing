@@ -14,6 +14,7 @@ class ProductsTest extends TestCase
 
     // Required for setUp()
     private User $user;
+    private User $admin;
 
     // Setup global variable ($user)
     protected function setUp(): void
@@ -23,6 +24,7 @@ class ProductsTest extends TestCase
 
         // Setup and create a user
         $this->user = $this->createUser();
+        $this->admin = $this->createUser(isAdmin: true);
     }
 
     // Test to check if homepage contains created data
@@ -82,9 +84,53 @@ class ProductsTest extends TestCase
         });
     }
 
-    private function createUser(): User
+    public function test_admin_can_see_products_create_button()
+    {
+        // Get the route for index acting as the newly created user
+        $response = $this->actingAs($this->admin)->get('products/index');
+
+        // Check if the page can successfully be reached
+        $response->assertStatus(200);
+
+        // Assert if view receives controller variable $productList and if the last product in the collection is not visible on the page
+        $response->assertSee('Add a new product');
+    }
+
+    public function test_non_admin_cannot_see_products_create_button()
+    {
+        // Get the route for index acting as the newly created user
+        $response = $this->actingAs($this->user)->get('products/index');
+
+        // Check if the page can successfully be reached
+        $response->assertStatus(200);
+
+        // Assert if view receives controller variable $productList and if the last product in the collection is not visible on the page
+        $response->assertDontSee('Add a new product');
+    }
+
+    public function test_admin_can_access_products_create_page()
+    {
+        // Get the route for index acting as the newly created user
+        $response = $this->actingAs($this->admin)->get('products/create');
+
+        // Check if the page can successfully be reached
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_cannot_access_products_create_page()
+    {
+        // Get the route for index acting as the newly created user
+        $response = $this->actingAs($this->user)->get('products/create');
+
+        // Check if the page can successfully be reached
+        $response->assertStatus(403);
+    }
+
+    private function createUser(bool $isAdmin = false): User
     {
         // Create a new user
-        return User::factory()->create();
+        return User::factory()->create([
+            'is_admin' =>$isAdmin
+        ]);
     }
 }

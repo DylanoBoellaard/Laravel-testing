@@ -11,6 +11,9 @@
 <body>
     <div class="container">
         <h1>Products</h1>
+        @if (auth()->user()->is_admin)
+        <a href="{{route('products.create')}}">Add a new product</a>
+        @endif
         <table>
             <thead>
                 <tr>

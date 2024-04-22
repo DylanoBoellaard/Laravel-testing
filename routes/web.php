@@ -33,6 +33,11 @@ Route::middleware('auth')->group(function () {
 // Products page
 Route::middleware('auth')->group(function () {
     Route::get('/products/index', [ProductsController::class, 'index'])->name('products.index');
+
+    Route::middleware('is_admin')->group(function() {
+        Route::get('/products/create', [ProductsController::class, 'create'])->name('products.create');
+        Route::get('/products/store', [ProductsController::class, 'store'])->name('products.store');
+    });
 });
 
 require __DIR__.'/auth.php';
