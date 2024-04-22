@@ -64,6 +64,7 @@ class ProductsTest extends TestCase
         $response->assertSee('No products found');
     }
 
+    // Test if pagination doesn't contain 11th record
     public function test_paginated_products_table_doesnt_contain_11th_record()
     {
         // Create 11 new products using the factory
@@ -84,6 +85,7 @@ class ProductsTest extends TestCase
         });
     }
 
+    // Test admin can see products create button on index page
     public function test_admin_can_see_products_create_button()
     {
         // Get the route for index acting as the newly created user
@@ -96,6 +98,7 @@ class ProductsTest extends TestCase
         $response->assertSee('Add a new product');
     }
 
+    // Test non admin cannot see products create button on index page
     public function test_non_admin_cannot_see_products_create_button()
     {
         // Get the route for index acting as the newly created user
@@ -108,6 +111,7 @@ class ProductsTest extends TestCase
         $response->assertDontSee('Add a new product');
     }
 
+    // Test admin can access products create page
     public function test_admin_can_access_products_create_page()
     {
         // Get the route for index acting as the newly created user
@@ -117,6 +121,7 @@ class ProductsTest extends TestCase
         $response->assertStatus(200);
     }
 
+    // Test non admin cannot see products create page
     public function test_non_admin_cannot_access_products_create_page()
     {
         // Get the route for index acting as the newly created user
@@ -126,6 +131,7 @@ class ProductsTest extends TestCase
         $response->assertStatus(403);
     }
 
+    // Test successful creation of product
     public function test_create_product_successful()
     {
         // Create product
@@ -152,6 +158,7 @@ class ProductsTest extends TestCase
         $this->assertEquals($product['price'], $lastProduct->price);
     }
 
+    // Test edit contains correct values
     public function test_product_edit_contains_correct_values()
     {
         $product = Products::factory()->create();
@@ -164,6 +171,7 @@ class ProductsTest extends TestCase
         $response->assertViewHas('product', $product);
     }
 
+    // Test update validation error
     public function test_product_update_validation_error_redirects_back_to_form()
     {
         $product = Products::factory()->create();
@@ -178,6 +186,7 @@ class ProductsTest extends TestCase
         $response->assertInvalid(['name', 'price']);
     }
 
+    // Test successful deletion of product
     public function test_product_delete_successful()
     {
         $product = Products::factory()->create();
@@ -189,6 +198,42 @@ class ProductsTest extends TestCase
         
         $this->assertDatabaseMissing('products', $product->toArray());
         $this->assertDatabaseCount('products', 0);
+    }
+
+    // Test API returns product list
+    public function test_api_returns_products_list()
+    {
+        $product = Products::factory()->create();
+        $response = $this->getJson('/api/products');
+
+        $response->assertJson([$product->toArray()]);
+    }
+
+    // Test API successful store
+    public function test_api_product_store_successful()
+    {
+        $product = [
+            'name' => 'Product 1',
+            'price' => 123
+        ];
+
+        $response = $this->postJson('/api/products', $product);
+
+        $response->assertStatus(201);
+        $response->assertJson($product);
+    }
+
+    // Test API unsuccessful store
+    public function test_api_product_invalid_store_returns_error()
+    {
+        $product = [
+            'name' => '',
+            'price' => 123
+        ];
+
+        $response = $this->postJson('/api/products', $product);
+
+        $response->assertStatus(422);
     }
 
     private function createUser(bool $isAdmin = false): User
