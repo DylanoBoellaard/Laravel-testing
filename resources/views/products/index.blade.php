@@ -11,6 +11,18 @@
 <body>
     <div class="container">
         <h1>Products</h1>
+
+        <!-- If controller sends a success or error message, display them -->
+        @if(Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+        </div>
+        @elseif (Session::has('error'))
+        <div class="alert alert-error">
+            {{ Session::get('error') }}
+        </div>
+        @endif
+
         @if (auth()->user()->is_admin)
         <a href="{{route('products.create')}}">Add a new product</a>
         @endif

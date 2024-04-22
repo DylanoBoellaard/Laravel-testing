@@ -126,6 +126,32 @@ class ProductsTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_create_product_successful()
+    {
+        // Create product
+        $product = [
+            'name' => 'Product 123',
+            'price' => 1234
+        ];
+
+        // Insert product to create -> post route
+        $response = $this->actingAs($this->admin)->post(route('products.store'), $product);
+
+        // Assert that the product has been created and admin gets redirected to index page
+        $response->assertStatus(302);
+        $response->assertRedirect(route('products.index'));
+
+        // Assert if database has the newly created product
+        $this->assertDatabaseHas('products', $product);
+
+        // Get latest product from database
+        $lastProduct = Products::latest()->first();
+
+        // Check if latest product is the same as the newly created product
+        $this->assertEquals($product['name'], $lastProduct->name);
+        $this->assertEquals($product['price'], $lastProduct->price);
+    }
+
     private function createUser(bool $isAdmin = false): User
     {
         // Create a new user

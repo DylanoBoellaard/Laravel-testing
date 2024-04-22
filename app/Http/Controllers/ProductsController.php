@@ -27,7 +27,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -35,7 +35,21 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+            // Validate the submitted form data
+            $validatedData = $request->validate([
+                'name' => 'required|string',
+                'price' => 'required|numeric',
+            ]);
+
+            // Create a new reservation and submit the data to the database
+            $product = new Products();
+            $product->name = $validatedData['name'];
+            $product->price = $validatedData['price'];
+            $product->save();
+
+            // Redirect back with success message
+            return redirect()->route('products.index')->with('success', 'Product successfully created');
+        
     }
 
     /**
