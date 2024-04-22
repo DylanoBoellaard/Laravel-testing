@@ -49,6 +49,13 @@
                     <td>
                         <a href="{{ route('products.edit', [$product->id]) }}">Edit</a>
                     </td>
+                    <td>
+                        <form action="{{ route('products.delete', [$product->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" style="background: none; border: none; padding: 0; margin: 0; cursor: pointer;">Delete</button>
+                        </form>
+                    </td>
                     @endif
                 </tr>
                 @empty

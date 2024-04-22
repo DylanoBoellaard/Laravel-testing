@@ -30,21 +30,20 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-            // Validate the submitted form data
-            $validatedData = $request->validate([
-                'name' => 'required|string',
-                'price' => 'required|numeric',
-            ]);
+        // Validate the submitted form data
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+        ]);
 
-            // Create a new reservation and submit the data to the database
-            $product = new Products();
-            $product->name = $validatedData['name'];
-            $product->price = $validatedData['price'];
-            $product->save();
+        // Create a new reservation and submit the data to the database
+        $product = new Products();
+        $product->name = $validatedData['name'];
+        $product->price = $validatedData['price'];
+        $product->save();
 
-            // Redirect back with success message
-            return redirect()->route('products.index')->with('success', 'Product successfully created');
-        
+        // Redirect back with success message
+        return redirect()->route('products.index')->with('success', 'Product successfully created');
     }
 
     /**
@@ -66,21 +65,31 @@ class ProductsController extends Controller
             'price' => 'required|numeric'
         ]);
 
-            // Update the product and submit the new data to the database
-            // $product = Products::findOrFail($productId);
-            $product->name = $validatedData['name'];
-            $product->price = $validatedData['price'];
-            $product->save();
+        // Update the product and submit the new data to the database
+        // $product = Products::findOrFail($productId);
+        $product->name = $validatedData['name'];
+        $product->price = $validatedData['price'];
+        $product->save();
 
-            // Redirect with success message
-            return redirect()->route('products.index')->with('success', 'Product has been updated');
+        // Redirect with success message
+        return redirect()->route('products.index')->with('success', 'Product has been updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Products $products)
+    public function delete(Products $product)
     {
-        //
+        // try to delete the provided product
+        try {
+            $product->delete();
+
+            // Redirect to index with a success message
+            return redirect()->route('products.index')->with('success', 'Product successfully deleted');
+        } catch (\Exception $e) {
+            // Handle any other exceptions or errors that might occur during deletion
+            // Redirect back with those error messages
+            return redirect()->route('products.index')->with('error', 'product couldnt be deleted ' . $e->getMessage());
+        }
     }
 }
