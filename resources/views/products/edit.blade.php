@@ -31,7 +31,7 @@
                 <input type="text" name="name" id="name" value="{{ $product->name }}" required>
 
                 <label for="price"><span>Price</span></label>
-                <input type="number" name="price" id="price" value="{{ $product->price }}" required>
+                <input type="decimal" name="price" id="price" value="{{ $product->price }}" required>
 
                 <input type="submit" value="Edit">
             </form>

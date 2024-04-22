@@ -164,6 +164,20 @@ class ProductsTest extends TestCase
         $response->assertViewHas('product', $product);
     }
 
+    public function test_product_update_validation_error_redirects_back_to_form()
+    {
+        $product = Products::factory()->create();
+
+        $response = $this->actingAs($this->admin)->put('products/' . 'update/' . $product->id, [
+            'name' => '',
+            'price' => ''
+        ]);
+
+        $response->assertStatus(302);
+        // $response->assertSessionHasErrors(['name']); Checks if session has errors. assertInvalid checks for any errors as well
+        $response->assertInvalid(['name', 'price']);
+    }
+
     private function createUser(bool $isAdmin = false): User
     {
         // Create a new user

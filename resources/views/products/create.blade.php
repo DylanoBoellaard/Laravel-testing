@@ -17,7 +17,7 @@
                 <input type="text" name="name" id="name" required>
 
                 <label for="price"><span>Price</span></label>
-                <input type="number" name="price" id="price" required>
+                <input type="decimal" name="price" id="price" required>
 
                 <input type="submit" value="Sla op">
             </form>

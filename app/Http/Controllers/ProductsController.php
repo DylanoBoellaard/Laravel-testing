@@ -12,11 +12,6 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        // Get product details
-        // $productList = Products::select('products.id', 'products.name', 'products.price')
-        //     ->orderBy('products.id', 'asc')
-        //     ->get();
-
         $productList = Products::paginate(10);
 
         return view('products.index', compact('productList'));
@@ -63,9 +58,22 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Products $products)
+    public function update(Request $request, Products $product)
     {
-        //
+        // Validate the submitted form data
+        $validatedData = $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric'
+        ]);
+
+            // Update the product and submit the new data to the database
+            // $product = Products::findOrFail($productId);
+            $product->name = $validatedData['name'];
+            $product->price = $validatedData['price'];
+            $product->save();
+
+            // Redirect with success message
+            return redirect()->route('products.index')->with('success', 'Product has been updated');
     }
 
     /**
