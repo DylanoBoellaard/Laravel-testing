@@ -35,8 +35,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/index', [ProductsController::class, 'index'])->name('products.index');
 
     Route::middleware('is_admin')->group(function() {
+        // Create
         Route::get('/products/create', [ProductsController::class, 'create'])->name('products.create');
         Route::post('/products/store', [ProductsController::class, 'store'])->name('products.store');
+
+        // Edit
+        Route::get('/products/edit/{product}', [ProductsController::class, 'edit'])->name('products.edit');
+        Route::put('/products/update/{product}', [ProductsController::class, 'update'])->name('products.update');
     });
 });
 

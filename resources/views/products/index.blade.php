@@ -33,6 +33,9 @@
                     <th>Name</th>
                     <th>Price in USD</th>
                     <th>Price in EUR</th>
+                    @if (auth()->user()->is_admin)
+                    <th>Edit</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -42,6 +45,11 @@
                     <td>{{$product->name}}</td>
                     <td>{{$product->price}}</td>
                     <td>{{$product->price_eur}}</td>
+                    @if (auth()->user()->is_admin)
+                    <td>
+                        <a href="{{ route('products.edit', [$product->id]) }}">Edit</a>
+                    </td>
+                    @endif
                 </tr>
                 @empty
                 <tr>
